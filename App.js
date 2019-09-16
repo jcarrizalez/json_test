@@ -47,14 +47,14 @@ export default class App extends React.Component {
     }
   }
   saludo = () => { Alert:alert('hola juan') }
-   
+
   render() {
     const version = Platform.Version;
-
+    
     return (
       <ImageBackground source={require('./assets/fondo1.jpg')} style={styles.container}>
         
-          <View style={styles.headerA} />
+          
           <View style={styles.headerB}>
             
             <View style={styles.headerB1}>
@@ -120,10 +120,9 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
 
-  headerA: { flex: 0.05, flexDirection: 'row',backgroundColor: 'green', },
-  headerB: { flex: 0.1, flexDirection: 'row', backgroundColor: 'green',},
-  headerB1:{ flex: 2, marginTop: 4, marginLeft: 10},
-  headerB2:{ flex: 1, marginTop: 4, marginRight: 10},
+  headerB: { flex: 0.15, flexDirection: 'row', backgroundColor: 'green',},
+  headerB1:{ flex: 2, marginTop: 25, marginLeft: 10},
+  headerB2:{ flex: 1, marginTop: 25, marginRight: 10},
   headerC: { flex: 0.08, flexDirection: 'row', backgroundColor: 'green',},
   headerC1:{ flex: 1,borderBottomWidth :3, borderBottomColor: 'white',},
   headerC2:{ flex: 1,},

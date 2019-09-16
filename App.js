@@ -14,6 +14,7 @@ export default class App extends React.Component {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});  
     this.state = {
+      view: 'rutas',
       saludo : 'Hola mundo',
        dataSource: ds.cloneWithRows([
          {id:1, name:'San Juan - La Villa'},
@@ -45,35 +46,57 @@ export default class App extends React.Component {
 
         ]),  
     }
+    this.onPressView = this.onPressView.bind(this);
   }
   saludo = () => { Alert:alert('hola juan') }
+ 
+  onPressView(e){
+    this.setState({view:'cobros'})
+    
+    //this.setState({[e.target.name]:e.target.value});
+   }
 
   render() {
+    let view = this.state.view
     const version = Platform.Version;
+    let name = 'Whatsapp'
+    if(view == 'rutas'){
+      name = name+' '+view
+    }
+    else if(view == 'cobros'){
+      name = name+' '+view
+    }
     
+
     return (
+
+    
+    
+
       <ImageBackground source={require('./assets/fondo1.jpg')} style={styles.container}>
-        
-          
+
           <View style={styles.headerB}>
             
             <View style={styles.headerB1}>
            
               <Text style={{ fontSize: 25, color: 'white',fontWeight: 'bold',textAlign: 'left' }}> 
-                Whatsapp 
+                {name} 
               </Text>
              </View>
             
             <View style={styles.headerB2}>
-              <Text style={{ fontSize: 25, color: 'white',textAlign: 'right',  }}> 
-                Icon 
-              </Text>
+            <TouchableOpacity onPress={this.onPressView} name="cobros">
+            <Image  
+            source={require('./assets/search_azul.png')} 
+            style={{width:30, height:30, borderRadius:15}}
+             />
+            </TouchableOpacity>
             </View>
           </View>
           <View style={styles.headerC}>
            
             <View style={styles.headerC1}>
-            <TouchableOpacity onPress={this.saludo}>
+            <TouchableOpacity onPress={this.onPressView}>
               <Text style={{ fontSize: 25, color: 'white',textAlign: 'center', }}> 
                 Rutas
               </Text>
@@ -121,8 +144,8 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
 
   headerB: { flex: 0.15, flexDirection: 'row', backgroundColor: 'green',},
-  headerB1:{ flex: 2, marginTop: 25, marginLeft: 10},
-  headerB2:{ flex: 1, marginTop: 25, marginRight: 10},
+  headerB1:{ flex: 1, marginTop: 25, marginLeft: 10},
+  headerB2:{ flex: 0.1, marginTop: 35, marginRight: 10},
   headerC: { flex: 0.08, flexDirection: 'row', backgroundColor: 'green',},
   headerC1:{ flex: 1,borderBottomWidth :3, borderBottomColor: 'white',},
   headerC2:{ flex: 1,},

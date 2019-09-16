@@ -15,6 +15,7 @@ export default class App extends React.Component {
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});  
     this.state = {
       view: 'rutas',
+      view2: 'cobros',
       saludo : 'Hola mundo',
        dataSource: ds.cloneWithRows([
          {id:1, name:'San Juan - La Villa'},
@@ -51,7 +52,7 @@ export default class App extends React.Component {
   saludo = () => { Alert:alert('hola juan') }
  
   onPressView(e){
-    this.setState({view:'cobros'})
+    this.setState({view:this.state.view2, view2:this.state.view})
     
     //this.setState({[e.target.name]:e.target.value});
    }

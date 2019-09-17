@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Image, Button, Alert, ImageBackground, TouchableOpacity, TextInput, Platform, ListView, FlatList } from 'react-native';
+import { Text, View, StyleSheet, Image, Button, Alert, ImageBackground, TouchableOpacity, TextInput, Platform, ListView, FlatList,Keyboard, KeyboardAvoidingView } from 'react-native';
 import Constants from 'expo-constants';
 
 import { List, ListItem, SearchBar } from "react-native-elements";
@@ -14,10 +14,15 @@ export default class App extends React.Component {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});  
     this.state = {
+      search:{
+        active: false,
+        value: ''
+        },
+
       view: 'rutas',
       view2: 'cobros',
       saludo : 'Hola mundo',
-       dataSource: ds.cloneWithRows([
+       routes: ds.cloneWithRows([
          {id:1, name:'San Juan - La Villa'},
          {id:2, name:'San Juan - Santa Maria'},
          {id:3, name:'San Juan - Gamarra'},
@@ -44,18 +49,84 @@ export default class App extends React.Component {
          {id:20, name:'Cagua - Maracay'},
          {id:21, name:'Cagua - Valencia'},
          {id:22, name:'Maracay - Valencia'},
+        ]),
+        cobros: ds.cloneWithRows([
+         {id:1, name:'juan manuel'},
+         {id:2, name:'pedro jose'},
+         {id:3, name: 'manuel santana'},
+         {id:4, name:'carlos perez'},
+        ]),
 
-        ]),  
     }
     this.onPressView = this.onPressView.bind(this);
+    this.search = this.search.bind(this);
+    this.searchButton = this.searchButton.bind(this);
+    this.searchButton2 = this.searchButton2.bind(this);
+    
   }
   saludo = () => { Alert:alert('hola juan') }
  
   onPressView(e){
     this.setState({view:this.state.view2, view2:this.state.view})
-    
+    console.log(e.value)
     //this.setState({[e.target.name]:e.target.value});
    }
+  
+  search(){
+
+    if(this.state.search.active){
+      return ( 
+          <TextInput
+          style={{
+            backgroundColor:'white',
+            height:50,
+            borderRadius:15,
+            fontSize:30,
+            textAlign: 'center',
+            
+          }}
+          keyboardType='numeric'
+          maxLength={3}
+          value={this.state.search.value}
+          onSubmitEditing={Keyboard.dismiss}
+          
+        />)
+    }
+
+  }
+
+  searchButton(type){
+    this.setState({search:{active:!this.state.search.active}})
+     this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this._keyboardDidShow,
+    );
+    }
+  searchButton2(){
+    this.setState({search:{active:false}})
+    console.log('seacrt2');
+    }
+  componentDidMount() {
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this._keyboardDidShow,
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      this._keyboardDidHide,
+    );
+  }
+  componentWillUnmount() {
+    //this.keyboardDidShowListener.remove();
+    //this.keyboardDidHideListener.remove();
+  }
+  _keyboardDidShow() {
+    //alert('Keyboard Shown');
+  }
+
+  _keyboardDidHide() {
+    //alert('Keyboard Hidden');
+  }
 
   render() {
     let view = this.state.view
@@ -71,33 +142,38 @@ export default class App extends React.Component {
 
     return (
 
-    
-    
 
       <ImageBackground source={require('./assets/fondo1.jpg')} style={styles.container}>
+          
+
 
           <View style={styles.headerB}>
             
             <View style={styles.headerB1}>
-           
+
+
+                {this.search()}   
+              
               <Text style={{ fontSize: 25, color: 'white',fontWeight: 'bold',textAlign: 'left' }}> 
                 {name} 
               </Text>
              </View>
             
             <View style={styles.headerB2}>
-            <TouchableOpacity onPress={this.onPressView} name="cobros">
+            
+            <TouchableOpacity onPress={this.searchButton} name="cobros">
             <Image  
             source={require('./assets/search_azul.png')} 
             style={{width:30, height:30, borderRadius:15}}
              />
             </TouchableOpacity>
+
             </View>
           </View>
-          <View style={styles.headerC}>
+          <View style={styles.headerC} >
            
             <View style={styles.headerC1}>
-            <TouchableOpacity onPress={this.onPressView}>
+            <TouchableOpacity onPress={this.onPressView} name='rutas'>
               <Text style={{ fontSize: 25, color: 'white',textAlign: 'center', }}> 
                 Rutas
               </Text>
@@ -105,18 +181,20 @@ export default class App extends React.Component {
               </TouchableOpacity>
             </View>
             <View style={styles.headerC2}>
+            <TouchableOpacity onPress={this.onPressView} name='cobros'>
               <Text style={{ fontSize: 25, color: 'white',textAlign: 'center',  }}> 
                 Cobros
               </Text>
+              </TouchableOpacity>
             </View>
           </View>
-          <View style={styles.headerD}>
-
+          <View style={styles.headerD} onPointerMove={this.searchButton2}>
+  
             <ListView  style={{ width: "100%" }}
-                dataSource={this.state.dataSource}  
+                dataSource={(this.state.view=='rutas') ? this.state.routes : this.state.cobros}  
                 renderRow={  
                     (rowData) =>
-                    <TouchableOpacity>
+                    <TouchableOpacity >
                         <View style={styles.headerD1}>  
 
                           <View style={styles.headerD2}>

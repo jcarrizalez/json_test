@@ -1,3 +1,5 @@
+# Esto ya no se usa.
+
 # Sample Snack app
 
 Welcome to Expo!
